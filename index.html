@@ -1,105 +1,3 @@
-https://<your-username>.github.io/sovereign-app/
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Asset Protection & Revenue Engine</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-900 text-slate-100 font-sans antialiased">
-
-    <!-- NAVBAR -->
-    <nav class="border-b border-slate-800 bg-slate-950/80 backdrop-blur py-4 px-6 flex justify-between items-center max-w-7xl mx-auto">
-        <div class="text-xl font-black text-indigo-400 tracking-wider">SOVEREIGN CORE</div>
-        <button onclick="testBackend()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-5 rounded-lg text-sm transition">
-            Test Backend
-        </button>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <section class="max-w-4xl mx-auto px-6 py-16 text-center">
-        <div class="inline-block bg-indigo-500/10 text-indigo-400 text-xs font-semibold uppercase tracking-widest py-1 px-3 rounded-full border border-indigo-500/20 mb-6">
-            Zero-Capital Commercial Platform
-        </div>
-        <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-tight mb-6 bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">
-            Automated UCC Article 9 & Revenue Structuring
-        </h1>
-        <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-10">
-            Instantly insulate business assets, execute senior secured ring-fencing, and automate B2B invoice factoring with $0 upfront capital.
-        </p>
-        
-        <!-- CTA BUTTON -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a id="buyButton" href="#" onclick="executeOrder()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-lg py-4 px-8 rounded-xl shadow-lg shadow-indigo-600/30 transition">
-                Shield Assets Now - $299
-            </a>
-        </div>
-    </section>
-
-    <!-- FEATURES GRID -->
-    <section class="max-w-6xl mx-auto px-6 py-12 border-t border-slate-800">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="p-6 bg-slate-800/50 rounded-2xl border border-slate-700/50">
-                <div class="text-2xl font-bold text-indigo-400 mb-2">01. UCC Ring-Fencing</div>
-                <p class="text-slate-400 text-sm">Perfects first-position senior security interests under UCC § 9-203 & § 9-502 to isolate holding wealth.</p>
-            </div>
-            <div class="p-6 bg-slate-800/50 rounded-2xl border border-slate-700/50">
-                <div class="text-2xl font-bold text-indigo-400 mb-2">02. B2B Factoring</div>
-                <p class="text-slate-400 text-sm">Automated receivables assignment notices under UCC § 9-109 for instant liquidity capture.</p>
-            </div>
-            <div class="p-6 bg-slate-800/50 rounded-2xl border border-slate-700/50">
-                <div class="text-2xl font-bold text-indigo-400 mb-2">03. Statutory Disputes</div>
-                <p class="text-slate-400 text-sm">Programmatic FCRA 15 U.S.C. § 1681i administrative notice parsing and deletion demands.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- BACKEND STATUS RESPONSE DISPLAY -->
-    <section class="max-w-2xl mx-auto px-6 pb-20">
-        <div id="outputBox" class="hidden p-4 bg-slate-950 border border-slate-800 rounded-xl text-left text-xs font-mono text-emerald-400 overflow-x-auto">
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-xs">
-        &copy; Sovereign Revenue Engine. Hosted 100% on GitHub Pages.
-    </footer>
-
-    <!-- INTERACTIVE JAVASCRIPT CONNECTING TO BACKEND -->
-    <script>
-        // PASTE YOUR RENDER BACKEND URL BELOW
-        const BACKEND_URL = "https://sovereign-backend.onrender.com";
-
-        async function testBackend() {
-            const box = document.getElementById("outputBox");
-            box.classList.remove("hidden");
-            box.innerText = "Connecting to Render backend...";
-            try {
-                const res = await fetch(BACKEND_URL);
-                const data = await res.json();
-                box.innerText = "BACKEND RESPONSE:\n" + JSON.stringify(data, null, 2);
-            } catch (err) {
-                box.innerText = "ERROR CONNECTING TO BACKEND: " + err;
-            }
-        }
-
-        async function executeOrder() {
-            const box = document.getElementById("outputBox");
-            box.classList.remove("hidden");
-            box.innerText = "Processing order via backend...";
-            try {
-                const res = await fetch(BACKEND_URL + "/success");
-                const data = await res.json();
-                box.innerText = "ORDER PROCESSED & ASSET DELIVERED:\n" + JSON.stringify(data, null, 2);
-            } catch (err) {
-                box.innerText = "ERROR: " + err;
-            }
-        }
-    </script>
-
-</body>
-</html>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -137,7 +35,7 @@ https://<your-username>.github.io/sovereign-app/
                 <a href="#faq" class="hover:text-white transition">FAQ</a>
             </div>
             <div class="flex items-center gap-4">
-                <a href="#pricing" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-2.5 px-5 rounded-lg shadow-lg shadow-indigo-600/20 transition">
+                <a href="https://buy.stripe.com/dRmaEW49K4Mq2pAeb66J200" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-2.5 px-5 rounded-lg shadow-lg shadow-indigo-600/20 transition">
                     Shield Assets Now
                 </a>
             </div>
@@ -158,11 +56,11 @@ https://<your-username>.github.io/sovereign-app/
         </h1>
 
         <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
-            Automate intercompany security agreements and perfect first-position senior security interests under **UCC Article 9**. Insulate holding company assets from operational liabilities with zero legal retainers.
+            Automate intercompany security agreements and perfect first-position senior security interests under <strong>UCC Article 9</strong>. Insulate holding company assets from operational liabilities with zero legal retainers.
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-            <a href="#pricing" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base py-4 px-8 rounded-xl shadow-xl shadow-indigo-600/25 transition transform hover:-translate-y-0.5">
+            <a href="https://buy.stripe.com/dRmaEW49K4Mq2pAeb66J200" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base py-4 px-8 rounded-xl shadow-xl shadow-indigo-600/25 transition transform hover:-translate-y-0.5">
                 Protect Assets Instantly - $299
             </a>
             <a href="#calculator" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold text-base py-4 px-8 rounded-xl border border-slate-800 transition">
@@ -254,8 +152,8 @@ https://<your-username>.github.io/sovereign-app/
                         <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Instant PDF & JSON Delivery</li>
                     </ul>
                 </div>
-                <!-- REPLACE LINK BELOW WITH YOUR LIVE STRIPE CHECKOUT LINK -->
-                <a href="https://checkout.stripe.com/pay/cs_test_..." class="w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl transition shadow-lg shadow-indigo-600/20">
+                <!-- LIVE $299 STRIPE LINK -->
+                <a href="https://buy.stripe.com/dRmaEW49K4Mq2pAeb66J200" class="w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl transition shadow-lg shadow-indigo-600/20">
                     Buy Standard Package
                 </a>
             </div>
@@ -275,8 +173,8 @@ https://<your-username>.github.io/sovereign-app/
                         <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> FCRA Statutory Credit Dispute Generator</li>
                     </ul>
                 </div>
-                <!-- REPLACE LINK BELOW WITH YOUR LIVE STRIPE CHECKOUT LINK -->
-                <a href="https://checkout.stripe.com/pay/cs_test_..." class="w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl transition shadow-lg shadow-indigo-600/30">
+                <!-- LIVE $49 STRIPE LINK -->
+                <a href="https://buy.stripe.com/00w5kCgWwen0c0ac2Y6J201" class="w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl transition shadow-lg shadow-indigo-600/30">
                     Subscribe to Pro Tier
                 </a>
             </div>
