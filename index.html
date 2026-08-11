@@ -100,3 +100,218 @@ https://<your-username>.github.io/sovereign-app/
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShieldCapital | Automated UCC Article 9 & Corporate Asset Protection</title>
+    <meta name="description" content="Automated senior secured asset protection, holding company isolation, and B2B invoice factoring under UCC Article 9.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- ANNOUNCEMENT BAR -->
+    <div class="bg-gradient-to-r from-indigo-900 via-indigo-700 to-purple-800 text-xs py-2 px-4 text-center font-semibold text-white tracking-wide">
+        ⚡ NEW: Automated UCC § 9-502 State XML Filing Generator Now Live &nbsp;→&nbsp; <a href="#pricing" class="underline hover:text-indigo-200">Get Started Free</a>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-black text-white text-lg shadow-lg shadow-indigo-500/30">S</div>
+                <span class="text-xl font-bold tracking-tight text-white">ShieldCapital<span class="text-indigo-500">.ai</span></span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a href="#features" class="hover:text-white transition">Features</a>
+                <a href="#how-it-works" class="hover:text-white transition">How It Works</a>
+                <a href="#calculator" class="hover:text-white transition">Calculator</a>
+                <a href="#pricing" class="hover:text-white transition">Pricing</a>
+                <a href="#faq" class="hover:text-white transition">FAQ</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#pricing" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-2.5 px-5 rounded-lg shadow-lg shadow-indigo-600/20 transition">
+                    Shield Assets Now
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-20 pb-24 px-6 max-w-7xl mx-auto text-center overflow-hidden">
+        <div class="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.indigo.900),theme(colors.slate.950))] opacity-40"></div>
+        
+        <div class="inline-flex items-center gap-2 bg-slate-900/80 border border-slate-800 text-indigo-400 text-xs font-semibold py-1.5 px-4 rounded-full mb-8">
+            <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+            Wall Street Grade Asset Protection for Businesses
+        </div>
+
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1] max-w-5xl mx-auto mb-8">
+            Protect Your Business Revenue From Lawsuits in <span class="bg-gradient-to-r from-indigo-400 via-purple-300 to-indigo-200 bg-clip-text text-transparent">5 Minutes</span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+            Automate intercompany security agreements and perfect first-position senior security interests under **UCC Article 9**. Insulate holding company assets from operational liabilities with zero legal retainers.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+            <a href="#pricing" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base py-4 px-8 rounded-xl shadow-xl shadow-indigo-600/25 transition transform hover:-translate-y-0.5">
+                Protect Assets Instantly - $299
+            </a>
+            <a href="#calculator" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold text-base py-4 px-8 rounded-xl border border-slate-800 transition">
+                Calculate Protected Value →
+            </a>
+        </div>
+
+        <!-- TRUST BADGES -->
+        <div class="pt-8 border-t border-slate-800/80 grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-xs text-slate-400">
+            <div>✓ UCC § 9-203 Compliant</div>
+            <div>✓ UCC § 9-502 Auto-Filing</div>
+            <div>✓ 15 U.S.C. § 1681 Dispute Engine</div>
+            <div>✓ 256-Bit Encrypted Data</div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE VALUE CALCULATOR -->
+    <section id="calculator" class="py-16 px-6 max-w-4xl mx-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+            <h3 class="text-xl font-bold text-white mb-2 text-center">Interactive Protection Calculator</h3>
+            <p class="text-sm text-slate-400 mb-6 text-center">Estimate your senior secured coverage and protected liquid capital</p>
+
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Total Operating & Equipment Assets ($)</label>
+                    <input type="range" id="assetSlider" min="50000" max="2000000" step="25000" value="250000" oninput="updateCalc()" class="w-full accent-indigo-500 bg-slate-800 rounded-lg h-2 cursor-pointer">
+                    <div class="text-right text-indigo-400 font-bold text-lg mt-1" id="assetVal">$250,000</div>
+                </div>
+
+                <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 grid grid-cols-2 gap-4 text-center">
+                    <div>
+                        <div class="text-xs text-slate-400 mb-1">Protected Collateral Value</div>
+                        <div class="text-xl font-extrabold text-emerald-400" id="protectedVal">$250,000</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 mb-1">Unsecured Claim Exposure</div>
+                        <div class="text-xl font-extrabold text-indigo-400" id="exposureVal">$0.00 (Lien Shielded)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="py-20 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">How ShieldCapital Works in 3 Steps</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto">Complete statutory protection without hiring $500/hr corporate attorneys.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="p-8 bg-slate-900/60 border border-slate-800 rounded-2xl relative">
+                <div class="w-10 h-10 bg-indigo-600/20 text-indigo-400 font-black rounded-lg flex items-center justify-center mb-6 text-lg">1</div>
+                <h3 class="text-xl font-bold text-white mb-3">Input Entity Details</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">Enter your Holding Company and Operating Entity names along with asset valuation metrics.</p>
+            </div>
+            <div class="p-8 bg-slate-900/60 border border-slate-800 rounded-2xl relative">
+                <div class="w-10 h-10 bg-indigo-600/20 text-indigo-400 font-black rounded-lg flex items-center justify-center mb-6 text-lg">2</div>
+                <h3 class="text-xl font-bold text-white mb-3">Auto-Generate Legal Packages</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">Our engine builds UCC Article 9 Security Agreements and formatted state UCC-1 financing statement templates.</p>
+            </div>
+            <div class="p-8 bg-slate-900/60 border border-slate-800 rounded-2xl relative">
+                <div class="w-10 h-10 bg-indigo-600/20 text-indigo-400 font-black rounded-lg flex items-center justify-center mb-6 text-lg">3</div>
+                <h3 class="text-xl font-bold text-white mb-3">Instant Perfection & Shielding</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">File with the Secretary of State to establish senior priority over general liabilities and lawsuit claims.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING TIERS -->
+    <section id="pricing" class="py-20 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Simple, Transparent Pricing</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto">Zero hidden legal retainers. Instant document delivery.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <!-- ONE-TIME PACKAGE -->
+            <div class="p-8 bg-slate-900/80 border border-slate-800 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-2">Standard UCC Shield</h3>
+                    <p class="text-xs text-slate-400 mb-6">Ideal for single LLCs & small agency operating entities</p>
+                    <div class="text-4xl font-extrabold text-white mb-6">$299 <span class="text-xs font-normal text-slate-400">/ one-time</span></div>
+                    
+                    <ul class="space-y-3 text-sm text-slate-300 mb-8">
+                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> UCC § 9-203 Intercompany Agreement</li>
+                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> State Pre-Filled UCC-1 Payload</li>
+                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Asset Valuation Certificate</li>
+                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Instant PDF & JSON Delivery</li>
+                    </ul>
+                </div>
+                <!-- REPLACE LINK BELOW WITH YOUR LIVE STRIPE CHECKOUT LINK -->
+                <a href="https://checkout.stripe.com/pay/cs_test_..." class="w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl transition shadow-lg shadow-indigo-600/20">
+                    Buy Standard Package
+                </a>
+            </div>
+
+            <!-- PRO SUBSCRIPTION -->
+            <div class="p-8 bg-gradient-to-b from-indigo-950/60 to-slate-900 border-2 border-indigo-500/80 rounded-2xl flex flex-col justify-between relative shadow-2xl shadow-indigo-500/10">
+                <div class="absolute -top-3 right-6 bg-indigo-600 text-white text-[10px] font-extrabold uppercase py-1 px-3 rounded-full">Most Popular</div>
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-2">Enterprise Protection + Factoring</h3>
+                    <p class="text-xs text-slate-400 mb-6">For high-volume businesses & multi-entity structures</p>
+                    <div class="text-4xl font-extrabold text-white mb-6">$49 <span class="text-xs font-normal text-slate-400">/ month</span></div>
+
+                    <ul class="space-y-3 text-sm text-slate-300 mb-8">
+                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Everything in Standard Package</li>
+                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Automated B2B Invoice Factoring Engine</li>
+                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Annual UCC-1 Continuation Tracking</li>
+                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> FCRA Statutory Credit Dispute Generator</li>
+                    </ul>
+                </div>
+                <!-- REPLACE LINK BELOW WITH YOUR LIVE STRIPE CHECKOUT LINK -->
+                <a href="https://checkout.stripe.com/pay/cs_test_..." class="w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl transition shadow-lg shadow-indigo-600/30">
+                    Subscribe to Pro Tier
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="py-16 px-6 max-w-4xl mx-auto border-t border-slate-800/80">
+        <h2 class="text-3xl font-bold text-white mb-8 text-center">Frequently Asked Questions</h2>
+
+        <div class="space-y-4">
+            <div class="p-6 bg-slate-900 rounded-xl border border-slate-800">
+                <h4 class="font-bold text-white mb-2">Is a UCC Article 9 Security Interest legally binding?</h4>
+                <p class="text-sm text-slate-400 leading-relaxed">Yes. Article 9 of the Uniform Commercial Code is codified law across all 50 US states. Perfection via a UCC-1 filing establishes first-position senior claim over specified commercial assets.</p>
+            </div>
+            <div class="p-6 bg-slate-900 rounded-xl border border-slate-800">
+                <h4 class="font-bold text-white mb-2">How do I deliver my documents after paying?</h4>
+                <p class="text-sm text-slate-400 leading-relaxed">Upon payment completion, our automated backend immediately compiles your customized security agreement and emails it directly to your inbox within seconds.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800 py-8 px-6 text-center text-xs text-slate-500">
+        <p class="mb-2">&copy; 2026 ShieldCapital.ai. All rights reserved. Powered by Sovereign Engine Core.</p>
+        <p>Disclaimer: ShieldCapital is an automated legal-technology software platform, not a law firm or financial advisor.</p>
+    </footer>
+
+    <!-- INTERACTIVE CALCULATOR SCRIPT -->
+    <script>
+        function updateCalc() {
+            const val = parseInt(document.getElementById("assetSlider").value);
+            document.getElementById("assetVal").innerText = "$" + val.toLocaleString();
+            document.getElementById("protectedVal").innerText = "$" + val.toLocaleString();
+        }
+    </script>
+</body>
+</html>
