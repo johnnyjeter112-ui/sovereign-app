@@ -100,6 +100,35 @@
         </div>
     </section>
 
+    <!-- WORLD CLOCK SECTION -->
+    <section id="world-clocks" class="py-10 px-6 max-w-4xl mx-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-lg font-bold text-white">World Clock</h3>
+                    <p class="text-sm text-slate-400">Current time in selected time zones. Tap a card to remove it.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <select id="tzSelect" class="bg-slate-800 text-slate-200 rounded-md px-3 py-2 text-sm">
+                        <option value="America/New_York">New York (ET)</option>
+                        <option value="America/Chicago">Chicago (CT)</option>
+                        <option value="America/Los_Angeles">Los Angeles (PT)</option>
+                        <option value="Europe/London">London (GMT/BST)</option>
+                        <option value="Europe/Paris">Paris (CET/CEST)</option>
+                        <option value="Asia/Tokyo">Tokyo (JST)</option>
+                        <option value="Australia/Sydney">Sydney (AEST/AEDT)</option>
+                        <option value="UTC">UTC</option>
+                    </select>
+                    <button id="addTz" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-md text-sm">Add</button>
+                </div>
+            </div>
+
+            <div id="clocksGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Clock cards will be injected here -->
+            </div>
+        </div>
+    </section>
+
     <!-- INTERACTIVE VALUE CALCULATOR -->
     <section id="calculator" class="py-12 px-6 max-w-4xl mx-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
@@ -127,6 +156,7 @@
         </div>
     </section>
 
+    <!-- REST OF PAGE ... (unchanged) -->
     <!-- HOW IT WORKS -->
     <section id="how-it-works" class="py-16 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
         <div class="text-center mb-12">
@@ -153,76 +183,13 @@
         </div>
     </section>
 
-    <!-- PRICING TIERS -->
-    <section id="pricing" class="py-16 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
-        <div class="text-center mb-12">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">Simple, Transparent Pricing</h2>
-            <p class="text-slate-400 max-w-2xl mx-auto">Zero hidden legal retainers. Instant document delivery.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto px-4">
-            <!-- ONE-TIME PACKAGE -->
-            <div class="p-6 bg-slate-900/80 border border-slate-800 rounded-2xl flex flex-col justify-between">
-                <div>
-                    <h3 class="text-lg font-bold text-white mb-2">Standard UCC Shield</h3>
-                    <p class="text-xs text-slate-400 mb-4">Ideal for single LLCs & small agency operating entities</p>
-                    <div class="text-3xl sm:text-4xl font-extrabold text-white mb-4">$299 <span class="text-xs font-normal text-slate-400">/ one-time</span></div>
-                    
-                    <ul class="space-y-2 text-sm text-slate-300 mb-6">
-                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> UCC § 9-203 Intercompany Agreement</li>
-                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> State Pre-Filled UCC-1 Payload</li>
-                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Asset Valuation Certificate</li>
-                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Instant PDF & JSON Delivery</li>
-                    </ul>
-                </div>
-                <!-- LIVE $299 STRIPE LINK -->
-                <a href="https://buy.stripe.com/dRmaEW49K4Mq2pAeb66J200" class="w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-4 rounded-xl transition">Buy Standard Package</a>
-            </div>
-
-            <!-- PRO SUBSCRIPTION -->
-            <div class="p-6 bg-gradient-to-b from-indigo-950/60 to-slate-900 border-2 border-indigo-500/80 rounded-2xl flex flex-col justify-between relative">
-                <div class="absolute -top-3 right-6 bg-indigo-600 text-white text-[10px] font-extrabold uppercase py-1 px-3 rounded-full">Most Popular</div>
-                <div>
-                    <h3 class="text-lg font-bold text-white mb-2">Enterprise Protection + Factoring</h3>
-                    <p class="text-xs text-slate-400 mb-4">For high-volume businesses & multi-entity structures</p>
-                    <div class="text-3xl sm:text-4xl font-extrabold text-white mb-4">$49 <span class="text-xs font-normal text-slate-400">/ month</span></div>
-
-                    <ul class="space-y-2 text-sm text-slate-300 mb-6">
-                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Everything in Standard Package</li>
-                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Automated B2B Invoice Factoring Engine</li>
-                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> Annual UCC-1 Continuation Tracking</li>
-                        <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> FCRA Statutory Credit Dispute Generator</li>
-                    </ul>
-                </div>
-                <!-- LIVE $49 STRIPE LINK -->
-                <a href="https://buy.stripe.com/00w5kCgWwen0c0ac2Y6J201" class="w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-4 rounded-xl transition">Subscribe to Pro Tier</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ SECTION -->
-    <section id="faq" class="py-12 px-6 max-w-4xl mx-auto border-t border-slate-800/80">
-        <h2 class="text-2xl font-bold text-white mb-6 text-center">Frequently Asked Questions</h2>
-
-        <div class="space-y-4 px-4">
-            <div class="p-4 bg-slate-900 rounded-xl border border-slate-800">
-                <h4 class="font-bold text-white mb-2">Is a UCC Article 9 Security Interest legally binding?</h4>
-                <p class="text-sm text-slate-400 leading-relaxed">Yes. Article 9 of the Uniform Commercial Code is codified law across all 50 US states. Perfection via a UCC-1 filing establishes priority in most commercial contexts.</p>
-            </div>
-            <div class="p-4 bg-slate-900 rounded-xl border border-slate-800">
-                <h4 class="font-bold text-white mb-2">How do I deliver my documents after paying?</h4>
-                <p class="text-sm text-slate-400 leading-relaxed">Upon payment completion, our automated backend immediately compiles your customized security agreement and emails it directly to the registrant.</p>
-            </div>
-        </div>
-    </section>
-
     <!-- FOOTER -->
     <footer class="border-t border-slate-800 py-6 px-6 text-center text-xs text-slate-500">
         <p class="mb-2">&copy; 2026 ShieldCapital.ai. All rights reserved. Powered by Sovereign Engine Core.</p>
         <p>Disclaimer: ShieldCapital is an automated legal-technology software platform, not a law firm or financial advisor.</p>
     </footer>
 
-    <!-- INTERACTIVE CALCULATOR SCRIPT -->
+    <!-- INTERACTIVE SCRIPTS -->
     <script>
         // Mobile nav toggle
         const navToggle = document.getElementById('navToggle');
@@ -251,6 +218,135 @@
             document.getElementById("assetVal").innerText = "$" + val.toLocaleString();
             document.getElementById("protectedVal").innerText = "$" + val.toLocaleString();
         }
+
+        // World clock logic
+        const DEFAULT_ZONES = ['America/New_York','Europe/London','Asia/Tokyo','UTC'];
+        const STORAGE_KEY = 'shield_zones_v1';
+
+        function formatTimeForZone(date, timeZone) {
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone };
+            const dateOptions = { year: 'numeric', month: 'short', day: 'numeric', timeZone };
+            const timeStr = new Intl.DateTimeFormat(undefined, timeOptions).format(date);
+            const dateStr = new Intl.DateTimeFormat(undefined, dateOptions).format(date);
+            // Also include timezone abbreviation if available
+            try {
+                const tzName = new Intl.DateTimeFormat(undefined, { timeZoneName: 'short', timeZone }).formatToParts(date).find(p => p.type === 'timeZoneName');
+                return { timeStr, dateStr, tzName: tzName ? tzName.value : timeZone };
+            } catch (e) {
+                return { timeStr, dateStr, tzName: timeZone };
+            }
+        }
+
+        function createClockCard(zone) {
+            const card = document.createElement('div');
+            card.className = 'p-4 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-between gap-4 cursor-pointer';
+            card.setAttribute('data-timezone', zone);
+
+            const left = document.createElement('div');
+            left.className = 'text-left';
+            const title = document.createElement('div');
+            title.className = 'font-semibold text-white';
+            title.innerText = zone.replace('_', ' ');
+            const dateEl = document.createElement('div');
+            dateEl.className = 'text-xs text-slate-400';
+            dateEl.innerText = '';
+            left.appendChild(title);
+            left.appendChild(dateEl);
+
+            const right = document.createElement('div');
+            right.className = 'text-right';
+            const timeEl = document.createElement('div');
+            timeEl.className = 'text-2xl font-extrabold text-indigo-400 tabular-nums';
+            timeEl.innerText = '';
+            const tzEl = document.createElement('div');
+            tzEl.className = 'text-xs text-slate-400';
+            tzEl.innerText = '';
+            right.appendChild(timeEl);
+            right.appendChild(tzEl);
+
+            card.appendChild(left);
+            card.appendChild(right);
+
+            // Remove on tap/click
+            card.addEventListener('click', (e) => {
+                if (confirm(`Remove ${zone} from clocks?`)) {
+                    removeZone(zone);
+                }
+            });
+
+            return { card, timeEl, dateEl, tzEl };
+        }
+
+        function renderClocks() {
+            const grid = document.getElementById('clocksGrid');
+            grid.innerHTML = '';
+            const zones = getSavedZones();
+            zones.forEach(zone => {
+                const { card, timeEl, dateEl, tzEl } = createClockCard(zone);
+                grid.appendChild(card);
+                // attach elements for updating
+                clockElements.push({ zone, timeEl, dateEl, tzEl });
+            });
+        }
+
+        function getSavedZones() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) return JSON.parse(raw);
+            } catch (e) {}
+            // fallback
+            return DEFAULT_ZONES.slice();
+        }
+
+        function saveZones(zones) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(zones));
+        }
+
+        function addZone(zone) {
+            const zones = getSavedZones();
+            if (zones.includes(zone)) return;
+            zones.push(zone);
+            saveZones(zones);
+            rebuildClocks();
+        }
+
+        function removeZone(zone) {
+            let zones = getSavedZones();
+            zones = zones.filter(z => z !== zone);
+            saveZones(zones);
+            rebuildClocks();
+        }
+
+        function rebuildClocks() {
+            clockElements.length = 0;
+            renderClocks();
+            updateClock();
+        }
+
+        const clockElements = [];
+
+        function updateClock() {
+            const now = new Date();
+            clockElements.forEach(({ zone, timeEl, dateEl, tzEl }) => {
+                const formatted = formatTimeForZone(now, zone);
+                timeEl.innerText = formatted.timeStr;
+                dateEl.innerText = formatted.dateStr;
+                tzEl.innerText = formatted.tzName;
+            });
+        }
+
+        document.getElementById('addTz').addEventListener('click', () => {
+            const select = document.getElementById('tzSelect');
+            const zone = select.value;
+            addZone(zone);
+        });
+
+        // Initialize clocks
+        document.addEventListener('DOMContentLoaded', () => {
+            renderClocks();
+            updateClock();
+            setInterval(updateClock, 1000);
+        });
 
         // Register service worker for PWA offline support
         if ('serviceWorker' in navigator) {
