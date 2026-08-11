@@ -1,0 +1,2 @@
+[tool.vercel]
+entrypoint = "backend.github_push_simple:app"
