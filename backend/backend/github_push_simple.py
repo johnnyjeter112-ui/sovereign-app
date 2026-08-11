@@ -1,9 +1,11 @@
 """
-Enhanced FastAPI server with:
-- CORS origins read from ALLOWED_ORIGINS env var (comma separated)
+Enhanced FastAPI server with production hardening:
+- CORS origins read from ALLOWED_ORIGINS env var (comma separated). Require explicit setting in production.
+- Optional wildcard allowed when ALLOW_ORIGIN_WILDCARD=1 (explicit opt-in).
 - Rotating file logging with simple JSON formatter
 - Request ID middleware (X-Request-ID) and per-request logging
 - Body size limit middleware (MAX_REQUEST_BODY_BYTES env, default 200_000)
+- Simple in-memory rate limiting per client IP (RATE_LIMIT_PER_MIN)
 - /health and /metrics endpoints (basic)
 - Incremental counters for pushes and failures
 - Improved structured logging for GitHub API failures
@@ -27,14 +29,20 @@ from pydantic import BaseModel
 GITHUB_API = "https://api.github.com"
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")            # PAT with repo write & pull_request permissions
 PUSH_API_KEY = os.getenv("PUSH_API_KEY")            # server-side API key to protect endpoint
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:8080")
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS")
+ALLOW_ORIGIN_WILDCARD = os.getenv("ALLOW_ORIGIN_WILDCARD", "0") == "1"
 MAX_REQUEST_BODY_BYTES = int(os.getenv("MAX_REQUEST_BODY_BYTES", "200000"))
 LOG_FILE = os.getenv("LOG_FILE", "logs/github_push_service.log")
 LOG_MAX_BYTES = int(os.getenv("LOG_MAX_BYTES", "1048576"))  # 1MB
 LOG_BACKUP_COUNT = int(os.getenv("LOG_BACKUP_COUNT", "3"))
+RATE_LIMIT_PER_MIN = int(os.getenv("RATE_LIMIT_PER_MIN", "60"))
 
 if not GITHUB_TOKEN or not PUSH_API_KEY:
     raise RuntimeError("Set GITHUB_TOKEN and PUSH_API_KEY environment variables before running")
+
+# ALLOWED_ORIGINS must be explicitly set in production
+if not ALLOWED_ORIGINS and not ALLOW_ORIGIN_WILDCARD:
+    raise RuntimeError("Set ALLOWED_ORIGINS (comma-separated) or set ALLOW_ORIGIN_WILDCARD=1 for wildcard (not recommended)")
 
 # Ensure log directory exists
 os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
@@ -72,13 +80,17 @@ fh.setLevel(logging.INFO)
 fh.setFormatter(JSONFormatter())
 logger.addHandler(fh)
 
-app = FastAPI(title="GitHub Push Service (enhanced)")
+app = FastAPI(title="GitHub Push Service (production-hardened)")
 
 # CORS middleware - read allowed origins from env (comma-separated)
-origins = [o.strip() for o in ALLOWED_ORIGINS.split(",") if o.strip()]
+if ALLOW_ORIGIN_WILDCARD:
+    origins = ["*"]
+else:
+    origins = [o.strip() for o in ALLOWED_ORIGINS.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins or ["http://localhost:8080"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -89,45 +101,50 @@ _start_time = time.time()
 _total_pushes = 0
 _total_errors = 0
 
+# Simple in-memory rate limiter (per-client IP): sliding window timestamps
+_rate_limits: Dict[str, list] = {}
+
 class PushRequest(BaseModel):
     repo: str             # "owner/repo"
     base_branch: str = "main"
-    tasks: Dict[str, Any] # will be saved as JSON
+    tasks: Any            # will be saved as JSON
 
 
-# Middleware: request id + body size limit + attach client ip
+# Middleware: request id + body size limit + attach client ip + rate limiting
 @app.middleware("http")
-async def add_request_id_and_limit(request: Request, call_next):
+async def request_middleware(request: Request, call_next):
     request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+    client_ip = request.client.host if request.client else "unknown"
+
     # read body bytes to enforce limit
     body = await request.body()
     if len(body) > MAX_REQUEST_BODY_BYTES:
-        logger.warning("Request body too large", extra={"request_id": request_id, "client_ip": request.client.host if request.client else None})
+        logger.warning("Request body too large", extra={"request_id": request_id, "client_ip": client_ip})
         return JSONResponse({"detail": "Request body too large"}, status_code=413)
+
+    # Rate limit: allow RATE_LIMIT_PER_MIN requests per minute per client
+    now = time.time()
+    window_start = now - 60
+    timestamps = _rate_limits.get(client_ip, [])
+    # remove old timestamps
+    timestamps = [t for t in timestamps if t >= window_start]
+    if len(timestamps) >= RATE_LIMIT_PER_MIN:
+        logger.warning("Rate limit exceeded", extra={"request_id": request_id, "client_ip": client_ip})
+        return JSONResponse({"detail": "Rate limit exceeded"}, status_code=429)
+    timestamps.append(now)
+    _rate_limits[client_ip] = timestamps
 
     # attach request_id to state so handlers can use it
     request.state.request_id = request_id
-    # inject request_id into response headers later
+    request.state.client_ip = client_ip
+
     try:
         response: Response = await call_next(request)
-    except Exception as e:
-        # log and re-raise as HTTPException
-        logger.exception("Unhandled error during request", extra={"request_id": request_id})
+    except Exception:
+        logger.exception("Unhandled error during request", extra={"request_id": request_id, "client_ip": client_ip})
         raise
     response.headers["X-Request-ID"] = request_id
     return response
-
-
-def _log_with_request(extra: Dict[str, Any], level: str, msg: str):
-    extra = extra or {}
-    if level == "info":
-        logger.info(msg, extra=extra)
-    elif level == "warning":
-        logger.warning(msg, extra=extra)
-    elif level == "error":
-        logger.error(msg, extra=extra)
-    else:
-        logger.debug(msg, extra=extra)
 
 
 def gh_request(method: str, path: str, **kwargs):
@@ -150,7 +167,7 @@ def gh_request(method: str, path: str, **kwargs):
 async def push(request: Request, payload: PushRequest, x_api_key: str = Header(None)):
     global _total_pushes, _total_errors
     request_id = getattr(request.state, "request_id", None)
-    client_ip = request.client.host if request.client else None
+    client_ip = getattr(request.state, "client_ip", None)
 
     extra = {"request_id": request_id, "client_ip": client_ip, "repo": getattr(payload, "repo", None)}
 
@@ -159,7 +176,7 @@ async def push(request: Request, payload: PushRequest, x_api_key: str = Header(N
         logger.warning("Invalid API key attempt", extra=extra)
         raise HTTPException(status_code=401, detail="Invalid API key")
 
-    if "/" not in payload.repo:
+    if not payload.repo or "/" not in payload.repo:
         raise HTTPException(status_code=400, detail="repo must be owner/repo")
 
     owner, repo = payload.repo.split("/", 1)
@@ -249,4 +266,5 @@ async def metrics():
         "total_pushes": _total_pushes,
         "total_errors": _total_errors,
         "allowed_origins": origins,
+        "rate_limit_per_min": RATE_LIMIT_PER_MIN,
     }
