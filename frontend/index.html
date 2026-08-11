@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Sovereign To‑Do — PWA</title>
+
+  <!-- PWA meta -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#071022"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Sovereign ToDo">
+  <meta name="description" content="Mobile-first PWA To‑Do with snapshot → GitHub PR push.">
+
+  <style>
+    :root{--bg:#071022;--card:#0b1220;--accent:#06b6d4;--muted:#9aa6b2}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#021124,#071022);color:#e6eef6;font-family:Inter,system-ui,Arial;-webkit-font-smoothing:antialiased}
+    .app{max-width:920px;margin:env(safe-area-inset-top) 16px 80px;padding:18px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);box-shadow:0 12px 40px rgba(0,0,0,0.45)}
+    header{display:flex;align-items:center;gap:12px}
+    h1{margin:0;font-size:1.2rem}
+    .controls{display:flex;gap:8px;margin-top:12px}
+    input[type="text"]{flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    button{padding:10px 12px;border-radius:10px;border:none;background:var(--accent);color:#021124;font-weight:700}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600}
+    .filters{display:flex;gap:8px;margin-top:10px}
+    .list{margin-top:12px}
+    .task{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);margin-bottom:8px}
+    .task .title{flex:1}
+    .task.completed .title{text-decoration:line-through;color:var(--muted)}
+    footer{margin-top:14px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:0.9rem}
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:1000}
+    .modal .panel{background:#071022;padding:16px;border-radius:12px;max-width:520px;width:calc(100% - 24px)}
+    @media (max-width:540px){.controls{flex-direction:column}button{width:100%}}
+  </style>
+</head>
+<body>
+  <main class="app" role="main" aria-labelledby="app-title">
+    <header>
+      <h1 id="app-title">Sovereign To‑Do</h1>
+      <div style="margin-left:auto" class="pill">PWA • iPhone-ready</div>
+    </header>
+
+    <div class="controls" aria-label="Add task">
+      <input id="task-input" type="text" placeholder="Add a task (press Enter or tap Add)">
+      <button id="add-btn">Add</button>
+      <button id="clear-btn" class="ghost">Clear completed</button>
+    </div>
+
+    <div class="filters">
+      <button class="ghost" data-filter="all" aria-pressed="true">All</button>
+      <button class="ghost" data-filter="active">Active</button>
+      <button class="ghost" data-filter="completed">Completed</button>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button id="push-to-server-btn" class="ghost">Push (server)</button>
+        <button id="push-github-btn" class="ghost">Push → GitHub (PR)</button>
+      </div>
+    </div>
+
+    <section class="list" id="tasks" aria-live="polite"></section>
+
+    <footer>
+      <span>Local-only persistence • snapshots to GitHub</span>
+      <small>Tip: Add to Home Screen for app-like experience</small>
+    </footer>
+  </main>
+
+  <!-- Push modal (server URL + API key) -->
+  <div id="push-modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="panel">
+      <h3 style="margin:0 0 8px">Push tasks to server</h3>
+      <p style="margin:0 0 12px;color:var(--muted)">Enter the server URL and API key (session stored only).</p>
+      <label style="display:block;margin-bottom:8px">
+        Server URL
+        <input id="server-url" placeholder="https://your-backend.example.com" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;background:#0b1220;border:1px solid rgba(255,255,255,0.04);color:inherit">
+      </label>
+      <label style="display:block;margin-bottom:8px">
+        API Key (server)
+        <input id="server-api-key" type="password" placeholder="Server PUSH_API_KEY" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;background:#0b1220;border:1px solid rgba(255,255,255,0.04);color:inherit">
+      </label>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+        <button id="push-cancel" class="ghost">Cancel</button>
+        <button id="push-do" style="background:#06b6d4;border:none;padding:8px 12px;border-radius:8px;color:#021124;font-weight:700">Push</button>
+      </div>
+      <div id="push-message" style="margin-top:10px;color:var(--muted)"></div>
+    </div>
+  </div>
+
+  <!-- Client script -->
+  <script>
+  // Mobile-first To-Do with localStorage + server snapshot push integration
+  (function() {
+    // Elements
+    const input = document.getElementById('task-input');
+    const addBtn = document.getElementById('add-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const tasksEl = document.getElementById('tasks');
+    const filterBtns = document.querySelectorAll('[data-filter]');
+    const pushServerBtn = document.getElementById('push-to-server-btn');
+    const pushGithubBtn = document.getElementById('push-github-btn');
+
+    // Modal elements
+    const modal = document.getElementById('push-modal');
+    const serverUrlInput = document.getElementById('server-url');
+    const serverApiKeyInput = document.getElementById('server-api-key');
+    const pushDoBtn = document.getElementById('push-do');
+    const pushCancelBtn = document.getElementById('push-cancel');
+    const pushMessage = document.getElementById('push-message');
+
+    // Storage keys
+    const STORAGE_KEY = 'sov_todo_v1';
+    const SESSION_KEY = 'sov_push_session';
+
+    let tasks = []; let filter = 'all';
+
+    function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); }
+    function load(){ try{ tasks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }catch(e){tasks=[];} }
+
+    function render(){
+      tasksEl.innerHTML = '';
+      const visible = tasks.filter(t => filter==='all' ? true : filter==='active' ? !t.done : t.done);
+      if (!visible.length){ tasksEl.innerHTML = '<div style="padding:12px;border-radius:10px;border:1px dashed rgba(255,255,255,0.03);color:var(--muted)">No tasks yet.</div>'; return; }
+      visible.forEach(t => {
+        const el = document.createElement('div'); el.className='task'+(t.done?' completed':'');
+        const chk = document.createElement('input'); chk.type='checkbox'; chk.checked = !!t.done;
+        chk.addEventListener('change', ()=>{ t.done = chk.checked; save(); render(); });
+        const title = document.createElement('div'); title.className='title'; title.textContent = t.title;
+        const meta = document.createElement('small'); meta.style.display='block'; meta.style.color='var(--muted)'; meta.textContent = new Date(t.created).toLocaleString();
+        const actions = document.createElement('div');
+        const del = document.createElement('button'); del.className='ghost'; del.textContent='Delete';
+        del.addEventListener('click', ()=>{ if(confirm('Delete task?')){ tasks = tasks.filter(x=>x.id!==t.id); save(); render(); }});
+        actions.appendChild(del);
+        el.appendChild(chk); el.appendChild(title); el.appendChild(actions); el.appendChild(meta);
+        tasksEl.appendChild(el);
+      });
+    }
+
+    // Interaction
+    addBtn.addEventListener('click', ()=>{ if (input.value.trim()){ tasks.unshift({id:uid(),title:input.value.trim(),done:false,created:Date.now()}); input.value=''; save(); render(); }});
+    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ addBtn.click(); }});
+    clearBtn.addEventListener('click', ()=>{ tasks = tasks.filter(t=>!t.done); save(); render(); });
+    filterBtns.forEach(b=>b.addEventListener('click', ()=>{ filter=b.dataset.filter; filterBtns.forEach(x=>x.setAttribute('aria-pressed', x.dataset.filter===filter)); render(); }));
+
+    // Modal/show for server push
+    pushServerBtn.addEventListener('click', ()=>{
+      // Load session values if present
+      try {
+        const sess = sessionStorage.getItem(SESSION_KEY);
+        if (sess){ const parsed = JSON.parse(sess); serverUrlInput.value = parsed.server || ''; serverApiKeyInput.value = parsed.apiKey || ''; }
+      } catch(e){}
+      modal.style.display='flex'; modal.setAttribute('aria-hidden','false');
+    });
+    pushCancelBtn.addEventListener('click', ()=>{ modal.style.display='none'; pushMessage.textContent=''; });
+
+    // Push handler (calls your backend /push)
+    pushDoBtn.addEventListener('click', async ()=>{
+      const server = (serverUrlInput.value || '').trim();
+      const apiKey = (serverApiKeyInput.value || '').trim();
+      if(!server || !apiKey) { pushMessage.textContent='Enter server URL and API key.'; return; }
+      // Save in session for convenience
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({server, apiKey, saved_at:Date.now()}));
+      pushDoBtn.disabled = true; pushDoBtn.textContent='Pushing...';
+      pushMessage.textContent='Contacting server...';
+      try {
+        const payload = { repo: prompt('Target repo (owner/repo)', 'johnnyjeter112-ui/sovereign-app') || '', base_branch: 'main', tasks };
+        if(!payload.repo.includes('/')) { pushMessage.textContent='Invalid repo format.'; pushDoBtn.disabled=false; pushDoBtn.textContent='Push'; return; }
+        const res = await fetch(server.replace(/\/$/,'' ) + '/push', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
+          body: JSON.stringify(payload)
+        });
+        if(!res.ok){ const txt = await res.text(); throw new Error(txt || res.status); }
+        const json = await res.json();
+        pushMessage.innerHTML = 'PR created: <a href="'+json.pr_url+'" target="_blank" rel="noreferrer">' + json.pr_url + '</a>';
+        window.open(json.pr_url, '_blank');
+        modal.style.display='none';
+      } catch(err){
+        console.error(err);
+        pushMessage.textContent = 'Push failed: ' + (err.message || err);
+      } finally {
+        pushDoBtn.disabled = false; pushDoBtn.textContent='Push';
+      }
+    });
+
+    // Simple "Push → GitHub (PR)" client-side convenience that opens the Push modal
+    pushGithubBtn.addEventListener('click', ()=> pushServerBtn.click());
+
+    // Initialize
+    load(); render();
+
+    // PWA: register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').then(()=>console.log('SW registered')).catch(()=>{});
+    }
+  })();
+  </script>
+</body>
+</html>
