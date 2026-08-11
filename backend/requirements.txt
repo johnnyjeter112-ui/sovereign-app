@@ -1,5 +1,1 @@
-fastapi
-uvicorn[standard]
-requests
-pydantic
-python-dotenv
+astapi uvicorn[standard] requests pydantic python-dotenv
